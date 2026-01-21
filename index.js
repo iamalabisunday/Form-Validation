@@ -48,6 +48,8 @@ function isValidPassword(password) {
   }
 }
 
+let totalFormData = [];
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -55,7 +57,6 @@ form.addEventListener("submit", function (e) {
   const passwordValid = isValidPassword(passwordInput.value);
 
   if (emailValid && passwordValid) {
-    form.submit();
     formMsg.textContent = "Successful!";
     formMsg.style.color = "rgba(46, 204, 113, 0.75)";
   } else {
@@ -63,5 +64,12 @@ form.addEventListener("submit", function (e) {
     formMsg.style.color = "rgba(231, 76, 60, 0.75)";
   }
 
+  const formData = {
+    emailValidData: emailValid,
+    passwordValidData: passwordValid,
+  };
+
   form.reset();
+  totalFormData.push(formData);
+  console.log(totalFormData);
 });
