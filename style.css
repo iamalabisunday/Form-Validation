@@ -1,0 +1,108 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: #eaf0ff;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.card {
+  width: min(420px, 100%);
+  background: #111a2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 20px;
+}
+
+.input-group {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0c1428;
+  color: #eaf0ff;
+  outline: none;
+}
+
+input.valid {
+  border-color: rgba(46, 204, 113, 0.75);
+}
+
+input.invalid {
+  border-color: rgba(231, 76, 60, 0.85);
+}
+
+.error {
+  margin: 8px 0 0;
+  min-height: 18px;
+  font-size: 12px;
+  color: #ff6b6b;
+}
+
+.requirements {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.req {
+  margin: 6px 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.req.ok {
+  color: #7cffb2;
+  opacity: 1;
+}
+
+button {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  background: #2d6bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.formMsg {
+  width: 100%;
+  text-align: center;
+  margin-top: 12px;
+  min-height: 18px;
+  font-size: 12px;
+  opacity: 0.85;
+}
