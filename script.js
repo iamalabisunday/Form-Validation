@@ -1,3 +1,4 @@
+// ====== SELECT ELEMENTS ======
 const form = document.getElementById("form");
 const emailInput = document.getElementById("email");
 const emailError = document.getElementById("emailError");
@@ -8,46 +9,48 @@ const formMsg = document.getElementById("formMsg");
 
 // ====== EMAIL VALIDATION ======
 function isValidEmail(email) {
-  let emailValue = email.trim();
+  const emailValue = email.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (emailValue === "") {
     emailError.textContent = "Enter your email address";
-    emailInput.className = "invalid";
+    emailInput.classList.add("inputError");
     return false;
   }
 
-  if (emailValue.indexOf("@") === -1 || emailValue.indexOf(".") === -1) {
+  if (!emailRegex.test(emailValue)) {
     emailError.textContent = "Please enter a valid email address";
-    emailInput.className = "invalid";
+    emailInput.classList.add("inputError");
     return false;
   }
 
   emailError.textContent = "";
-  emailInput.className = "valid";
+  emailInput.classList.remove("inputError");
   return true;
 }
 
 // ====== PASSWORD VALIDATION ======
 function isValidPassword(password) {
-  let passwordValue = password.trim();
+  const passwordValue = password.trim();
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   if (passwordValue === "") {
     passwordError.textContent = "Enter your password";
-    passwordInput.className = "invalid";
+    passwordInput.classList.add("inputError");
     return false;
   }
 
   if (!passwordRegex.test(passwordValue)) {
-    passwordError.textContent = "Enter a valid password";
-    passwordInput.className = "invalid";
+    passwordError.textContent =
+      "Password must be at least 8 characters, include uppercase, lowercase, number & symbol";
+    passwordInput.classList.add("inputError");
     return false;
-  } else {
-    passwordError.textContent = "";
-    passwordInput.className = "valid";
-    return true;
   }
+
+  passwordError.textContent = "";
+  passwordInput.classList.remove("inputError");
+  return true;
 }
 
 // ====== STORE SUBMISSIONS ======
@@ -57,16 +60,21 @@ let totalFormData = [];
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const emailValid = isValidEmail(emailInput.value);
-  const passwordValid = isValidPassword(passwordInput.value);
+  const emailValue = emailInput.value;
+  const passwordValue = passwordInput.value;
+
+  const emailValid = isValidEmail(emailValue);
+  const passwordValid = isValidPassword(passwordValue);
 
   if (emailValid && passwordValid) {
     formMsg.textContent = "Successful!";
     formMsg.style.color = "rgba(46, 204, 113, 0.75)";
 
     const formData = {
-      emailInput: emailInput.value,
-      passwordInput: passwordInput.value,
+      email: emailValue,
+      password: passwordValue, // ⚠️ For learning only
+      emailValid,
+      passwordValid,
     };
 
     totalFormData.push(formData);
