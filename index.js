@@ -5,127 +5,126 @@ const passwordInput = document.getElementById("password");
 const passwordError = document.getElementById("passwordError");
 const submitBtn = document.getElementById("btn");
 const formMsg = document.getElementById("formMsg");
+
 const r1 = document.getElementById("r1");
 const r2 = document.getElementById("r2");
 const r3 = document.getElementById("r3");
 const r4 = document.getElementById("r4");
 
 // ====== EMAIL VALIDATION ======
-function isValidEmail(email) {
-  let emailValue = email.value.trim();
+function isValidEmail(input) {
+  const value = input.value.trim();
 
-  if (emailValue === "") {
+  if (value === "") {
     emailError.textContent = "Enter your email address";
-    emailInput.className = "invalid";
+    input.className = "invalid";
     return false;
   }
 
-  if (emailValue.indexOf("@") === -1 || emailValue.indexOf(".") === -1) {
+  if (value.indexOf("@") === -1 || value.indexOf(".") === -1) {
     emailError.textContent = "Please enter a valid email address";
-    emailInput.className = "invalid";
+    input.className = "invalid";
     return false;
   }
 
   emailError.textContent = "";
-  emailInput.className = "valid";
+  input.className = "valid";
   return true;
 }
 
-// ====== REQUIREMENTS VALIDATION ======
-
-// Uppercase helper function
+// ====== PASSWORD HELPERS ======
 function hasUppercase(text) {
-  if (text.toLowerCase() !== text) {
-    return true;
-  } else {
-    return false;
-  }
-}
-// Lowercase helper function
-function haslowercase(text) {
-  if (text.toUpperCase() !== text) {
-    return true;
-  } else {
-    return false;
-  }
+  return text.toLowerCase() !== text;
 }
 
-// Number helper function
+function hasLowercase(text) {
+  return text.toUpperCase() !== text;
+}
+
 function hasNumber(text) {
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-
+  for (let char of text) {
     if (char >= "0" && char <= "9") {
       return true;
     }
   }
-
   return false;
 }
 
 // ====== PASSWORD VALIDATION ======
-function isValidPassword(password) {
-  let passwordValue = password.value.trim();
+function isValidPassword(input) {
+  const value = input.value.trim();
+  let isValid = true;
 
-  // If Passqword is empty
-  if (passwordValue === "") {
+  if (value === "") {
     passwordError.textContent = "Enter your password";
-    passwordInput.className = "invalid";
+    input.className = "invalid";
     return false;
   }
 
-  // At least 8 characters
-  if (passwordValue.length >= 8) {
+  // 8 characters
+  if (value.length >= 8) {
     r1.className = "req ok";
   } else {
     r1.className = "req";
+    isValid = false;
   }
 
-  // At least one uppercase letter
-  if (hasUppercase(passwordValue)) {
+  // uppercase
+  if (hasUppercase(value)) {
     r2.className = "req ok";
   } else {
     r2.className = "req";
+    isValid = false;
   }
 
-  // At least one lowercase letter
-  if (haslowercase(passwordValue)) {
+  // lowercase
+  if (hasLowercase(value)) {
     r3.className = "req ok";
   } else {
     r3.className = "req";
+    isValid = false;
   }
-  // At least one number
-  if (hasNumber(passwordValue)) {
+
+  // number
+  if (hasNumber(value)) {
     r4.className = "req ok";
   } else {
     r4.className = "req";
+    isValid = false;
   }
+
+  if (isValid) {
+    passwordError.textContent = "";
+    input.className = "valid";
+  } else {
+    input.className = "invalid";
+  }
+
+  return isValid; // ✅ CRITICAL
 }
-// // ====== STORE SUBMISSIONS ======
-// let totalFormData = [];
 
-// // ====== FORM SUBMIT ======
-// form.addEventListener("submit", function (e) {
-//   e.preventDefault();
+// ====== ENABLE SUBMIT BUTTON ======
+function canEnableSubmit() {
+  const emailValid = isValidEmail(emailInput);
+  const passwordValid = isValidPassword(passwordInput);
 
-//   const emailValid = isValidEmail(emailInput.value);
-//   const passwordValid = isValidPassword(passwordInput.value);
+  submitBtn.disabled = !(emailValid && passwordValid);
+}
 
-//   if (emailValid && passwordValid) {
-//     formMsg.textContent = "Successful!";
-//     formMsg.style.color = "rgba(46, 204, 113, 0.75)";
+// ====== EVENTS ======
+emailInput.addEventListener("input", canEnableSubmit);
+passwordInput.addEventListener("input", canEnableSubmit);
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-//     const formData = {
-//       emailInput: emailInput.value,
-//       passwordInput: passwordInput.value,
-//     };
+  const emailValid = isValidEmail(emailInput);
+  const passwordValid = isValidPassword(passwordInput);
 
-//     totalFormData.push(formData);
-//     console.log(totalFormData);
-
-//     form.reset();
-//   } else {
-//     formMsg.textContent = "Please fix the errors above.";
-//     formMsg.style.color = "rgba(231, 76, 60, 0.75)";
-//   }
-// });
+  if (emailValid && passwordValid) {
+    formMsg.textContent = "Form submitted successfully!";
+    formMsg.className = "success";
+  } else {
+    formMsg.textContent = "Please fix the errors above.";
+    formMsg.className = "error";
+  }
+});
