@@ -42,8 +42,8 @@ function hasLowercase(text) {
 }
 
 function hasNumber(text) {
-  for (let char of text) {
-    if (char >= "0" && char <= "9") {
+  for (let char = 0; char < text.length; char++) {
+    if (text[char] >= "0" && text[char] <= "9") {
       return true;
     }
   }
@@ -108,12 +108,18 @@ function canEnableSubmit() {
   const emailValid = isValidEmail(emailInput);
   const passwordValid = isValidPassword(passwordInput);
 
-  submitBtn.disabled = !(emailValid && passwordValid);
+  if (emailValid && passwordValid) {
+    submitBtn.disabled = false;
+  } else {
+    submitBtn.disabled = true;
+  }
 }
 
 // ====== EVENTS ======
 emailInput.addEventListener("input", canEnableSubmit);
 passwordInput.addEventListener("input", canEnableSubmit);
+
+// ====== FORM SUBMIT ======
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -122,9 +128,6 @@ form.addEventListener("submit", function (e) {
 
   if (emailValid && passwordValid) {
     formMsg.textContent = "Form submitted successfully!";
-    formMsg.className = "success";
-  } else {
-    formMsg.textContent = "Please fix the errors above.";
-    formMsg.className = "error";
+    formMsg.className = "formMsg";
   }
 });
